@@ -21,7 +21,25 @@ y = startYear
 response = urllib2.urlopen(bbSite + str(y) + '-2/')
 html = response.read()
 soup = BeautifulSoup(html, 'html.parser')
-print soup.table
 # 3 cases: no table, just list of hot 100 hits, table with
 # cells with <a> tags, and cell without <a> tags
-
+if soup.table:
+    rows = soup.table.findChildren(['tr'])
+    for row in rows:
+        cells = row.findChildren('td')
+        for cell in cells:
+# check if the td has an <a> tag
+            links = cell.findChildren('a')
+            if len(links) == 0:
+                print cell
+            else:
+                for link in links:
+                    print link
+    # for tr in soup.table:
+# # handle cells with <a> tags
+        # links = soup.findChildren('a')
+        # if len(links) == 0:
+            # print tr
+        # else:
+            # for link in links:
+                # print link
