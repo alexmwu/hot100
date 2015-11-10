@@ -21,4 +21,11 @@ params = {
 r = requests.get(lyricsSite, params = params)
 
 soup = BeautifulSoup(r.text, 'html.parser')
+link = 0
+anc = soup.a
+
+if soup.a:
+    if soup.a.has_attr('href'):
+        link = anc['href']
+print link
 print soup.a
