@@ -8,6 +8,7 @@
 import urllib2
 from datetime import date
 from bs4 import BeautifulSoup
+from unidecode import unidecode
 
 bbSite = 'http://billboardtop100of.com/'
 
@@ -18,7 +19,7 @@ startYear = 1941
 currYear = date.today().year
 # iterate to the current year - 1
 for y in xrange(startYear, currYear):
-    fp = open('data/' + str(y) + 'hot100.csv','w')
+    fp = open('data/' + str(y) + 'hot100.atsv','w')
 
     response = urllib2.urlopen(bbSite + str(y) + '-2/')
     html = response.read()
@@ -31,7 +32,8 @@ for y in xrange(startYear, currYear):
             cells = row.findChildren('td')
             out_line = []
             for cell in cells:
-                out_line.append(cell.text)
-            out_str = ','.join(out_line).encode('ascii', 'ignore')
+                out_line.append(unidecode(cell.text))
+# TODO: currently ignoring utf-8 characters; should fix later
+            out_str = '@'.join(out_line)
             fp.write(out_str + '\n')
     fp.close()
