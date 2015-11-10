@@ -33,7 +33,6 @@ for y in xrange(startYear, currYear):
             out_line = []
             for cell in cells:
                 out_line.append(unidecode(cell.text))
-# TODO: currently ignoring utf-8 characters; should fix later
             out_str = '@'.join(out_line)
             fp.write(out_str + '\n')
     fp.close()

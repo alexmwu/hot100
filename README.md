@@ -8,3 +8,6 @@ unidecode
 
 requests
 `pip install requests`
+
+LyricWiki API
+This is subject to change.
