@@ -11,15 +11,14 @@ from bs4 import BeautifulSoup
 
 bbSite = 'http://billboardtop100of.com/'
 
-# well formatted tables start at 1945
-startYear = 1945
+# well formatted tables start at 1945; 2013 also has issues
+# Additionally, 1940 has a resource id of 336 for whatever reason
+startYear = 1941
 
 currYear = date.today().year
 # iterate to the current year - 1
 for y in xrange(startYear, currYear):
     fp = open('data/' + str(y) + 'hot100.csv','w')
-
-    y = startYear
 
     response = urllib2.urlopen(bbSite + str(y) + '-2/')
     html = response.read()
