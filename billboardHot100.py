@@ -19,7 +19,7 @@ startYear = 1941
 currYear = date.today().year
 # iterate to the current year - 1
 for y in xrange(startYear, currYear):
-    fp = open('data/' + str(y) + 'hot100.atsv','w')
+    fp = open('data/charts/' + str(y) + 'hot100.atsv','w')
 
     response = urllib2.urlopen(bbSite + str(y) + '-2/')
     html = response.read()
