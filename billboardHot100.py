@@ -14,11 +14,11 @@ bbSite = 'http://billboardtop100of.com/'
 
 # well formatted tables start at 1945; 2013 also has issues
 # Additionally, 1940 has a resource id of 336 for whatever reason
-startYear = 1941
+start_year = 1941
 
-currYear = date.today().year
+curr_year = date.today().year
 # iterate to the current year - 1
-for y in xrange(startYear, currYear):
+for y in xrange(start_year, curr_year):
     fp = open('data/charts/' + str(y) + 'hot100.atsv','w')
 
     response = urllib2.urlopen(bbSite + str(y) + '-2/')
