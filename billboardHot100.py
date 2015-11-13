@@ -13,7 +13,7 @@ from os.path import isfile
 
 bbSite = 'http://billboardtop100of.com/'
 
-# well formatted tables start at 1945; 2013 also has issues
+# well formatted tables start at 1945; 1959 and 2013 also have issues
 # Additionally, 1940 has a resource id of 336 for whatever reason
 start_year = 1941
 
