@@ -15,7 +15,7 @@ from os.path import isfile, join
 from unidecode import unidecode
 
 LYRICSSITE = 'http://www.lyrics.wikia.com/api.php'
-CHARTS_PATH = 'data/charts_sample/'
+CHARTS_PATH = 'data/charts/'
 LYRICS_PATH = 'data/lyrics/'
 NUMBER, ARTIST, SONG = range(3)
 
@@ -31,48 +31,55 @@ def replace_with_newlines(elem):
 
 files = [f for f in listdir(CHARTS_PATH) if isfile(join(CHARTS_PATH,f))]
 for file in files:
+    f = open(CHARTS_PATH+file)
+    if isfile(LYRICS_PATH+file):
+        f.close()
+        continue
     print file
-    with open(CHARTS_PATH+file) as f:
-        lyrics_file = open(LYRICS_PATH+file, 'w') # truncates existing file
-        songs = f.readlines()
-        for song in songs:
-            song_params = song.split('@')
-            params = {
-                'action': 'lyrics',
-                'artist': song_params[ARTIST],
-                'song': song_params[SONG]
-            }
-            # r = requests.get(lyricsSite, params = params)
-            link_r = requests.get(LYRICSSITE, params = params)
+    lyrics_file = open(LYRICS_PATH+file, 'w') # truncates existing file
+    songs = f.readlines()
+    f.close()
+    for song in songs:
+        song_params = song.split('@')
+        if len(song_params) != 3:
+            print 'Error with', file
+            break
+        params = {
+            'action': 'lyrics',
+            'artist': song_params[ARTIST],
+            'song': song_params[SONG]
+        }
+        # r = requests.get(lyricsSite, params = params)
+        link_r = requests.get(LYRICSSITE, params = params)
 
-            link_soup = BeautifulSoup(link_r.text, 'html.parser')
-            link = 0
-            anc = link_soup.a
+        link_soup = BeautifulSoup(link_r.text, 'html.parser')
+        link = 0
+        anc = link_soup.a
 
-            if link_soup.a:
-                if link_soup.a.has_attr('href'):
-                    link = anc['href']
-            if link != 0:
-                lyrics_r = requests.get(link)
+        if link_soup.a:
+            if link_soup.a.has_attr('href'):
+                link = anc['href']
+        if link != 0:
+            lyrics_r = requests.get(link)
 
-                lyrics_soup = BeautifulSoup(lyrics_r.text, 'html.parser')
+            lyrics_soup = BeautifulSoup(lyrics_r.text, 'html.parser')
 
-                comments = lyrics_soup.findAll(text = lambda text: isinstance(text, Comment))
-                # extract comments
-                [c.extract() for c in comments]
+            comments = lyrics_soup.findAll(text = lambda text: isinstance(text, Comment))
+            # extract comments
+            [c.extract() for c in comments]
 
-                # extract <script> tags
-                [s.extract() for s in lyrics_soup('script')]
+            # extract <script> tags
+            [s.extract() for s in lyrics_soup('script')]
 
-                lyrics_divs = lyrics_soup.findAll('div', { 'class': 'lyricbox'})
-                lyrics_file.write(song)
-                lyrics_file.write('@@@\n')
-                for div in lyrics_divs:
-                    #print replace_with_newlines(div)
-                    lyrics_file.write(replace_with_newlines(div))
-                    
-                lyrics_file.write('\n@@@\n')
-        lyrics_file.close()
+            lyrics_divs = lyrics_soup.findAll('div', { 'class': 'lyricbox'})
+            lyrics_file.write(song)
+            lyrics_file.write('@@@\n')
+            for div in lyrics_divs:
+                #print replace_with_newlines(div)
+                lyrics_file.write(replace_with_newlines(div))
+                
+            lyrics_file.write('\n@@@\n')
+    lyrics_file.close()
 
 
 '''
