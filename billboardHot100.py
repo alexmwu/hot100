@@ -14,12 +14,23 @@ bbSite = 'http://billboardtop100of.com/'
 
 # well formatted tables start at 1945; 2013 also has issues
 # Additionally, 1940 has a resource id of 336 for whatever reason
-start_year = 1941
+start_year = 1940
 
 curr_year = date.today().year
 # iterate to the current year - 1
 for y in xrange(start_year, curr_year):
-    fp = open('data/charts/' + str(y) + 'hot100.atsv','w')
+    if y == 1940:
+        y = 336
+    fname = 'data/charts/' + str(y) + 'hot100.atsv'
+    if isfile(fname):
+        continue
+    fp = open(fname, 'w')
+
+# 1959 has tables, but they are poorly formatted
+# still create the file for it
+    if y == 1959:
+        fp.close()
+        continue
 
     response = urllib2.urlopen(bbSite + str(y) + '-2/')
     html = response.read()
