@@ -9,18 +9,17 @@ import urllib2
 from datetime import date
 from bs4 import BeautifulSoup
 from unidecode import unidecode
+from os.path import isfile
 
 bbSite = 'http://billboardtop100of.com/'
 
 # well formatted tables start at 1945; 2013 also has issues
 # Additionally, 1940 has a resource id of 336 for whatever reason
-start_year = 1940
+start_year = 1941
 
 curr_year = date.today().year
 # iterate to the current year - 1
 for y in xrange(start_year, curr_year):
-    if y == 1940:
-        y = 336
     fname = 'data/charts/' + str(y) + 'hot100.atsv'
     if isfile(fname):
         continue
