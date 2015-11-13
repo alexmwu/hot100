@@ -12,6 +12,7 @@ import json
 import types
 from os import listdir
 from os.path import isfile, join
+from unidecode import unidecode
 
 LYRICSSITE = 'http://www.lyrics.wikia.com/api.php'
 CHARTS_PATH = 'data/charts_sample/'
@@ -23,7 +24,7 @@ def replace_with_newlines(elem):
     text = ''
     for elem in elem.descendants:
         if isinstance(elem, types.StringTypes):
-            text += elem.strip()
+            text += unidecode(elem.strip())
         elif elem.name == 'br':
             text += '\n'
     return text
@@ -67,12 +68,8 @@ for file in files:
                 lyrics_file.write(song)
                 lyrics_file.write('@@@\n')
                 for div in lyrics_divs:
-                    print div
                     #print replace_with_newlines(div)
-                    try:
-                        lyrics_file.write(replace_with_newlines(div))
-                    except TypeError:
-                        print div
+                    lyrics_file.write(replace_with_newlines(div))
                     
                 lyrics_file.write('\n@@@\n')
         lyrics_file.close()
