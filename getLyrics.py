@@ -26,15 +26,16 @@ def replace_with_newlines(elem):
         if isinstance(elem, types.StringTypes):
             text += unidecode(elem.strip())
         elif elem.name == 'br':
-            text += '\n'
+            text += ' '
+        #    text += '\n'
     return text
 
 files = [f for f in listdir(CHARTS_PATH) if isfile(join(CHARTS_PATH,f))]
 for file in files:
     f = open(CHARTS_PATH+file)
-    if isfile(LYRICS_PATH+file):
-        f.close()
-        continue
+    #if isfile(LYRICS_PATH+file):
+    #    f.close()
+    #    continue
     print file
     lyrics_file = open(LYRICS_PATH+file, 'w') # truncates existing file
     songs = f.readlines()
@@ -72,13 +73,11 @@ for file in files:
             [s.extract() for s in lyrics_soup('script')]
 
             lyrics_divs = lyrics_soup.findAll('div', { 'class': 'lyricbox'})
-            lyrics_file.write(song)
-            lyrics_file.write('@@@\n')
+            line = song.rstrip('\n') + '@'
             for div in lyrics_divs:
-                #print replace_with_newlines(div)
-                lyrics_file.write(replace_with_newlines(div))
-                
-            lyrics_file.write('\n@@@\n')
+                line += replace_with_newlines(div)
+            line += '\n'
+            lyrics_file.write(line)    
     lyrics_file.close()
 
 
