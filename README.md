@@ -9,5 +9,19 @@ unidecode
 requests
 `pip install requests`
 
+ntlk
+`pip install -U nltk`
+
+scikit-learn
+`pip install -U scikit-learn` or `conda install scikit-learn`
+
 LyricWiki API
 This is subject to change.
+
+References:
+https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words
+
+Notes:
+Charts format: NUM@ARTIST@SONG
+Lyrics format: NUM@ARTIST@SONG@LYRICS
+Splits contractions into two words
