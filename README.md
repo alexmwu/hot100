@@ -15,6 +15,9 @@ ntlk
 scikit-learn
 `pip install -U scikit-learn` or `conda install scikit-learn`
 
+numpy
+`pip install numpy`
+
 LyricWiki API
 This is subject to change.
 
