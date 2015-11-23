@@ -37,7 +37,6 @@ numpy
 
 LyricWiki API
 -------------
-`pip install -U scikit-learn` or `conda install scikit-learn`
 This is subject to change.
 
 References:
