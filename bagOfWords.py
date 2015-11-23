@@ -73,7 +73,7 @@ def getDF(PATH, train):
 		# Add DECADE column to data frame for training set
 		if train:
 			fileDecade = fileYear//10*10
-			decadeCol = pandas.DataFrame({'DECADE':[fileDecade]*df.shape[0]})
+			decadeCol = pandas.DataFrame({'DECADE':[fileDecade]*df_singleFile.shape[0]})
 			df1 = pandas.concat([df1, decadeCol], axis=1)
 
 		# Clean lyrics in place
@@ -123,7 +123,7 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
                              preprocessor = None, \
                              stop_words = None,   \
                              )
-                             #max_features = BAGSIZE) 
+                             #max_features = BAGSIZE)
 
 # Fit model and learn vocabulary on existing lyrics
 # Transform training data into feature vectorse
@@ -157,10 +157,10 @@ output = pandas.DataFrame(data = {	\
 	'SONG':testDFNotNull['SONG'],			\
 	'YEAR':testDFNotNull['YEAR'],			\
 	'DECADE':result})
-#print output
+
 #print testAccuracy(output)
 output.to_csv('data/Bag_of_Words_model.csv', index=False, sep='@', quoting=3, \
-	columns=['NUM','ARIST', 'SONG', 'YEAR', 'DECADE'])
+	columns=['NUM','ARTIST', 'SONG', 'YEAR', 'DECADE'])
 
 
 

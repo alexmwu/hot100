@@ -76,7 +76,7 @@ for song in songs:
         for div in lyrics_divs:
             line += replace_with_newlines(div)
         line += '\n'
-        lyrics_file.write(line)    
+        lyrics_file.write(line)
 lyrics_file.close()
 print 'Finished processing', filename
 

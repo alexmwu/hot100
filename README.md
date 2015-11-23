@@ -11,9 +11,19 @@ requests
 
 ntlk
 `pip install -U nltk`
+To install required packages, open python (i.e., by typing `python` in the command line) and
+do the following
+```
+import nltk
+nltk.download()
+```
+In the window that pops up, download `all-corpora`
 
 scikit-learn
 `pip install -U scikit-learn` or `conda install scikit-learn`
+
+scikit-learn requires scipy
+`pip install scipy`
 
 numpy
 `pip install numpy`
