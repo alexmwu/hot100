@@ -13,14 +13,14 @@ NUM@ARTIST@SONG@YEAR@DECADE
 14.0@Freddy Cannon@Palisades Park@1962.0@1960.0
 15.0@Neil Sedaka@Breaking Up Is Hard To Do@1962.0@1960.0
 16.0@Claude King@Wolverton Mountain@1962.0@1960.0
-17.0@Chubby Checker@Slow Twistin'@1962.0@1960.0
+17.0@Chubby Checker@Slow Twistin'@1962.0@1990.0
 18.0@Johnny Tillotson@It Keeps Right On A-hurtin'@1962.0@1960.0
 19.0@Mary Wells@The One Who Really Loves You@1962.0@1960.0
 20.0@Elvis Presley@Good Luck Charm@1962.0@1960.0
 22.0@Tommy Roe@Sheila@1962.0@1960.0
 23.0@Sam Cooke@Twistin' The Night Away@1962.0@1960.0
-26.0@Brenda Lee@Break It To Me Gently@1962.0@1960.0
-27.0@Marvelettes@Playboy@1962.0@1960.0
+26.0@Brenda Lee@Break It To Me Gently@1962.0@1990.0
+27.0@Marvelettes@Playboy@1962.0@1990.0
 28.0@Nat King Cole@Ramblin' Rose@1962.0@1960.0
 29.0@Brian Hyland@Sealed With A Kiss@1962.0@1960.0
 30.0@Jay and The Americans@She Cried@1962.0@1960.0
@@ -38,7 +38,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 46.0@Burl Ives@A Little Bitty Tear@1962.0@1960.0
 47.0@Everly Brothers@Crying In The Rain@1962.0@1960.0
 52.0@Sam Cooke@Having A Party@1962.0@1960.0
-54.0@Ray Charles@You Don't Know Me@1962.0@1960.0
+54.0@Ray Charles@You Don't Know Me@1962.0@1990.0
 55.0@Four Seasons@Sherry@1962.0@1960.0
 56.0@Joanie Sommers@Johnny Get Angry@1962.0@1960.0
 57.0@Elvis Presley@Can't Help Falling In Love@1962.0@1960.0
@@ -60,7 +60,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 80.0@James Darren@Her Royal Majesty@1962.0@1960.0
 81.0@Walter Brennan@Old Rivers@1962.0@1960.0
 82.0@Burl Ives@Funny Way Of Laughin'@1962.0@1960.0
-85.0@Jimmy Dean@P.T. 109@1962.0@1960.0
+85.0@Jimmy Dean@P.T. 109@1962.0@1990.0
 88.0@Gary U.S. Bonds@Twist, Twist Senora@1962.0@1960.0
 90.0@Dee Dee Sharp@Gravy@1962.0@1960.0
 93.0@Bobby Rydell@I'll Never Dance Again@1962.0@1960.0
@@ -69,7 +69,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 98.0@Peter, Paul and Mary@If I Had A Hammer@1962.0@1960.0
 100.0@Beach Boys@Surfin' Safari@1962.0@1960.0
 1.0@Sam The Sham and The Pharaohs@Wooly Bully@1965.0@1960.0
-2.0@Four Tops@I Can't Help Myself (Sugar Pie Honey Bunch)@1965.0@1960.0
+2.0@Four Tops@I Can't Help Myself (Sugar Pie Honey Bunch)@1965.0@1990.0
 3.0@Rolling Stones@(I Can't Get No) Satisfaction@1965.0@1960.0
 4.0@We Five@You Were On My Mind@1965.0@1960.0
 5.0@Righteous Brothers@You've Lost That Lovin' Feelin'@1965.0@1990.0
@@ -93,7 +93,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 26.0@Sounds Orchestral@Cast Your Fate To The Wind@1965.0@1960.0
 27.0@Barbara Mason@Yes, I'm Ready@1965.0@1960.0
 28.0@Tom Jones@What's New Pussycat?@1965.0@1960.0
-29.0@Barry McGuire@Eve Of Destruction@1965.0@1960.0
+29.0@Barry McGuire@Eve Of Destruction@1965.0@1990.0
 31.0@Beatles@Ticket To Ride@1965.0@1960.0
 35.0@Shirley Ellis@The Name Game@1965.0@1960.0
 36.0@Petula Clark@I Know A Place@1965.0@1990.0
@@ -135,7 +135,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 77.0@Patty Duke@Don't Just Stand There@1965.0@1960.0
 79.0@Brenda Lee@Too Many Rivers@1965.0@1960.0
 80.0@Dave Clark Five@I Like It Like That@1965.0@1960.0
-81.0@Bobby Goldsboro@Little Things@1965.0@1990.0
+81.0@Bobby Goldsboro@Little Things@1965.0@1960.0
 82.0@Peter and Gordon@True Love Ways@1965.0@1960.0
 85.0@Joe Tex@Hold What You've Got@1965.0@1960.0
 86.0@Animals@We Gotta Get Out Of This Place@1965.0@1960.0
@@ -145,7 +145,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 90.0@Cher@All I Really Want To Do@1965.0@1960.0
 91.0@Little Anthony and The Imperials@Take Me Back@1965.0@1960.0
 92.0@Strangeloves@I Want Candy@1965.0@1960.0
-96.0@Jack Jones@The Race Is On@1965.0@1990.0
+96.0@Jack Jones@The Race Is On@1965.0@1960.0
 99.0@Del Shannon@Keep Searchin'@1965.0@1960.0
 100.0@Marvin Gaye@How Sweet It Is (To Be Loved By You)@1965.0@1960.0
 1.0@Whitney Houston@I Will Always Love You@1993.0@1960.0
@@ -179,7 +179,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 31.0@Arrested Development@Mr. Wendal@1993.0@1990.0
 32.0@Rod Stewart@Have I Told You Lately@1993.0@1960.0
 33.0@Shanice@Saving Forever For You@1993.0@1990.0
-34.0@Duran Duran@Ordinary World@1993.0@1990.0
+34.0@Duran Duran@Ordinary World@1993.0@1960.0
 36.0@Meat Loaf@I'd Do Anything For Love (But I Won't Do That)@1993.0@1990.0
 37.0@Onyx@Slam@1993.0@1990.0
 38.0@P.M. Dawn@Looking Through Patient Eyes@1993.0@1990.0
@@ -193,10 +193,10 @@ NUM@ARTIST@SONG@YEAR@DECADE
 46.0@Toni Braxton@Another Sad Love Song@1993.0@1990.0
 47.0@Michael Jackson@Will You Be There@1993.0@1990.0
 49.0@Bobby Brown@Good Enough@1993.0@1990.0
-50.0@4 Non Blondes@What's Up@1993.0@1960.0
+50.0@4 Non Blondes@What's Up@1993.0@1990.0
 51.0@Ace Of Base@All That She Wants@1993.0@1990.0
 53.0@Dr. Dre@Dre Day@1993.0@1990.0
-54.0@Brian McKnight@One Last Cry@1993.0@1960.0
+54.0@Brian McKnight@One Last Cry@1993.0@1990.0
 55.0@Xscape@Just Kickin' It@1993.0@1990.0
 56.0@2Pac@I Get Around@1993.0@1990.0
 57.0@Bon Jovi@Bed Of Roses@1993.0@1990.0
@@ -209,10 +209,10 @@ NUM@ARTIST@SONG@YEAR@DECADE
 66.0@Madonna@Deeper And Deeper@1993.0@1990.0
 67.0@Madonna@Rain@1993.0@1990.0
 68.0@Jeremy Jordan@The Right Kind Of Love@1993.0@1990.0
-69.0@Inner Circle@Bad Boys@1993.0@1990.0
+69.0@Inner Circle@Bad Boys@1993.0@1960.0
 70.0@Boy Krazy@That's What Love Can Do@1993.0@1990.0
 71.0@Jon Secada@Do You Believe In Us@1993.0@1990.0
-72.0@Jon Secada@Angel@1993.0@1960.0
+72.0@Jon Secada@Angel@1993.0@1990.0
 73.0@Kenny G@Forever In Love@1993.0@1960.0
 74.0@Janet Jackson@Again@1993.0@1990.0
 76.0@Restless Heart@When She Cries@1993.0@1990.0
@@ -226,15 +226,15 @@ NUM@ARTIST@SONG@YEAR@DECADE
 84.0@En Vogue@Give It Up, Turn It Loose@1993.0@1990.0
 85.0@Kris Kross@Alright@1993.0@1990.0
 86.0@Ice Cube@Check Yo Self@1993.0@1990.0
-87.0@Sting@Fields Of Gold@1993.0@1960.0
+87.0@Sting@Fields Of Gold@1993.0@1990.0
 88.0@Dino@Ooh Child@1993.0@1960.0
 89.0@Go West@Faithful@1993.0@1990.0
 90.0@Rod Stewart@Reason To Believe@1993.0@1990.0
 91.0@Tears For Fears@Break It Down Again@1993.0@1990.0
 92.0@Joey Lawrence@Nothin' My Love Can't Fix@1993.0@1990.0
-94.0@Aerosmith@Livin' On The Edge@1993.0@1960.0
-95.0@Gin Blossoms@Hey Jealousy@1993.0@1990.0
-96.0@Sting@If I Ever Lose My Faith In You@1993.0@1990.0
+94.0@Aerosmith@Livin' On The Edge@1993.0@1990.0
+95.0@Gin Blossoms@Hey Jealousy@1993.0@1960.0
+96.0@Sting@If I Ever Lose My Faith In You@1993.0@1960.0
 97.0@Tony! Toni! Tone!@Anniversary@1993.0@1960.0
 98.0@Jade@One Woman@1993.0@1990.0
 99.0@Taylor Dayne@Can't Get Enough Of Your Love@1993.0@1990.0
@@ -250,14 +250,14 @@ NUM@ARTIST@SONG@YEAR@DECADE
 9.0@Monica@Don't Take It Personal (Just One Of Dem Days)@1995.0@1990.0
 10.0@Montell Jordan@This Is How We Do It@1995.0@1990.0
 11.0@Dionne Farris@I Know@1995.0@1960.0
-12.0@Boyz II Men@Water Runs Dry@1995.0@1990.0
+12.0@Boyz II Men@Water Runs Dry@1995.0@1960.0
 13.0@Adina Howard@Freak Like Me@1995.0@1990.0
 14.0@Blues Traveler@Run-Around@1995.0@1990.0
 15.0@All-4-One@I Can Love You Like That@1995.0@1990.0
 16.0@Bryan Adams@Have You Ever Really Loved A Woman?@1995.0@1990.0
 17.0@Bon Jovi@Always@1995.0@1990.0
 19.0@Nicki French@Total Eclipse Of The Heart@1995.0@1990.0
-20.0@Des'ree@You Gotta Be@1995.0@1960.0
+20.0@Des'ree@You Gotta Be@1995.0@1990.0
 21.0@Michael Jackson@You Are Not Alone@1995.0@1960.0
 22.0@Hootie and The Blowfish@Hold My Hand@1995.0@1990.0
 24.0@Ini Kamoze@Here Comes The Hotstepper@1995.0@1990.0
@@ -274,7 +274,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 35.0@Martin Page@In The House Of Stone And Light@1995.0@1990.0
 36.0@Luniz@I Got 5 On It@1995.0@1990.0
 37.0@Brandy@Baby@1995.0@1990.0
-38.0@Real McCoy@Run Away@1995.0@1960.0
+38.0@Real McCoy@Run Away@1995.0@1990.0
 39.0@Sophie B. Hawkins@As I Lay Me Down@1995.0@1990.0
 40.0@Mokenstef@He's Mine@1995.0@1990.0
 41.0@Collective Soul@December@1995.0@1960.0
@@ -322,9 +322,9 @@ NUM@ARTIST@SONG@YEAR@DECADE
 89.0@Bone Thugs-N-Harmony@1st Of Tha Month@1995.0@1990.0
 91.0@Firehouse@I Live My Life For You@1995.0@1990.0
 93.0@Rednex@Cotton Eye Joe@1995.0@1960.0
-94.0@Boyz II Men@Thank You@1995.0@1960.0
+94.0@Boyz II Men@Thank You@1995.0@1990.0
 95.0@Pretenders@I'll Stand By You@1995.0@1990.0
-96.0@N II U@I Miss You@1995.0@1960.0
+96.0@N II U@I Miss You@1995.0@1990.0
 97.0@Da Brat@Give It 2 You@1995.0@1990.0
 98.0@Brandy@Best Friend@1995.0@1990.0
 99.0@Soul Asylum@Misery@1995.0@1960.0
@@ -364,7 +364,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 40.0@Master P@Make Em' Say Uhh!@1998.0@1990.0
 41.0@Nicole feat. Missy "Misdemeanor" Elliott and Mocha@Make It Hot@1998.0@1990.0
 42.0@All Saints@Never Ever@1998.0@1990.0
-43.0@Janet@I Get Lonely@1998.0@1960.0
+43.0@Janet@I Get Lonely@1998.0@1990.0
 44.0@Mase@Feel So Good@1998.0@1990.0
 45.0@Voices Of Theory@Say It@1998.0@1990.0
 46.0@Billie Myers@Kiss The Rain@1998.0@1960.0
@@ -405,7 +405,7 @@ NUM@ARTIST@SONG@YEAR@DECADE
 84.0@Allure feat. 112@All Cried Out@1998.0@1990.0
 85.0@Big Punisher feat. Joe@Still Not A Player@1998.0@1990.0
 86.0@Aaliyah@The One I Gave My Heart To@1998.0@1990.0
-88.0@Inoj@Love You Down@1998.0@1990.0
+88.0@Inoj@Love You Down@1998.0@1960.0
 89.0@2Pac@Do For Love@1998.0@1990.0
 90.0@Luke@Raise The Roof@1998.0@1990.0
 91.0@Nu Flavor@Heaven@1998.0@1990.0

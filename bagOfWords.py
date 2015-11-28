@@ -14,6 +14,7 @@ from os.path import isfile, join, basename
 from os import listdir
 import sys
 import numpy as np
+import lda
 
 BAGSIZE = 50
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
@@ -126,13 +127,26 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
                              #max_features = BAGSIZE)
 
 # Fit model and learn vocabulary on existing lyrics
-# Transform training data into feature vectorse
+# Transform training data into feature vectors
 trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
 #printFeatures(vectorizer, trainDataFeatures)
 #trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
 
+# Create lda topic modeler (20 topics, 1500 iterations)
+model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
 
+# Fit lda model on features
+model.fit(trainDataFeatures)
+topic_word = model.topic_word_
+n_top_words = 8
+
+# Iterate through topics (i: topic number, topic_dist: distribution of items in topic)
+for i, topic_dist in enumerate(topic_word):
+    topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
+    print('Topic {}: {}'.format(i, ' '.join(topic_words)))
+
+'''
 ### Random Forest Classifier ###
 # Initialize random forest with 100 trees
 forest = RandomForestClassifier(n_estimators=100)
@@ -161,7 +175,5 @@ output = pandas.DataFrame(data = {	\
 #print testAccuracy(output)
 output.to_csv('data/Bag_of_Words_model.csv', index=False, sep='@', quoting=3, \
 	columns=['NUM','ARTIST', 'SONG', 'YEAR', 'DECADE'])
-
-
-
+'''
 

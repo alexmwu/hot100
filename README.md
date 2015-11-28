@@ -35,6 +35,10 @@ numpy
 -----
 `pip install numpy`
 
+lda
+---
+`pip install lda`
+
 LyricWiki API
 -------------
 This is subject to change.
