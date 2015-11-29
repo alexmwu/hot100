@@ -20,6 +20,9 @@ BAGSIZE = 50
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
 LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
 
+# TODO: use pickle to place dataframes into files to reduce processing cost each time
+# (have lyrics, years, artists, etc. already in dataframes)
+# TODO: separate different learners into different scripts
 # Apply cleaning to a lyrics string
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
@@ -96,11 +99,11 @@ def getDF(PATH, train):
 	return df
 
 
-### NOT CURRENLTY WORKING: ISSUE WITH INDEXING RESULT
 def testAccuracy(result):
 	nIncorrect = 0.0
 	nSamples = result['DECADE'].size
         # indices may not be in order or all present because of null checks
+        # so, don't use range (just iterate over the iterable index of the df)
 	for i in result.index:
 		if pandas.isnull(result['DECADE'][i]):
 			nIncorrect += 1.0
@@ -166,5 +169,4 @@ output = pandas.DataFrame(data = {	\
 	'DECADE':result})
 
 print 'accuracy: ', str(1 - testAccuracy(output))
-# output.to_csv('data/Bag_of_Words_model.csv', index=False, sep='@', quoting=3, \
-	# columns=['NUM','ARTIST', 'SONG', 'YEAR', 'DECADE'])
+
