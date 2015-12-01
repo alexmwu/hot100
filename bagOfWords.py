@@ -14,11 +14,16 @@ from os.path import isfile, join, basename
 from os import listdir
 import sys
 import numpy as np
+import lda
 
 BAGSIZE = 50
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
 LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
 
+# TODO: use pickle to place dataframes into files to reduce processing cost each time
+# (have lyrics, years, artists, etc. already in dataframes)
+# TODO: separate different learners into different scripts
+# Apply cleaning to a lyrics string
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
 	letters_only = re.sub('[^a-zA-Z]', ' ', raw_lyrics)
@@ -28,6 +33,7 @@ def cleanLyrics(raw_lyrics):
 	meaningful_words = [w for w in words if not w in stops]
 	return (" ".join(meaningful_words))
 
+# Usage: printFeatures(vectorizer, trainDataFeatures)
 def printFeatures(vectorizer, features):
 	# Print counts of each word in vocabulary in sorted descending order
 	vocab = vectorizer.get_feature_names()
@@ -39,6 +45,7 @@ def printFeatures(vectorizer, features):
 	for count, word in word_count_sorted:
 		print count, word
 
+# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
 def createAvgFeatureVec(vectorizer, features):
 	# Useful for Naive Bayes, not used for Random Forest
 	nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
@@ -78,40 +85,32 @@ def getDF(PATH, train):
 
 		# Clean lyrics in place
 		num_lyrics = df1['LYRICS'].size
-		clean_lyrics = []
-		#print "Cleaned %d of %d lyrics" % (0, num_lyrics)
+		# print "Cleaned %d of %d lyrics" % (0, num_lyrics)
 		for i in range(num_lyrics):
 			#if (i+1)%25 == 0:
 			#	print "Cleaned %d of %d lyrics" % (i+1, num_lyrics)
 			if not pandas.isnull(df1['LYRICS'][i]):
-				#clean_lyrics.append(cleanLyrics(df1['LYRICS'][i]))
 				df1.loc[i,'LYRICS'] = cleanLyrics(df1['LYRICS'][i])
 		#print "Finished cleaning %d lyrics" % (num_lyrics)
 
 		# Append new DF to master DF
 		df = df.append(df1, ignore_index=True)
 		#df.shape
-		#print df["LYRICS"][0]
-		#print df["LYRICS"][1]
-		#lyrics = cleanLyrics(df['LYRICS'][0])
-		#print lyrics
 	return df
 
 
-'''
-### NOT CURRENLTY WORKING: ISSUE WITH INDEXING RESULT
 def testAccuracy(result):
-	print result
-	nSamples = result['DECADE'].size
 	nIncorrect = 0.0
-	for i in range(nSamples):
+	nSamples = result['DECADE'].size
+        # indices may not be in order or all present because of null checks
+        # so, don't use range (just iterate over the iterable index of the df)
+	for i in result.index:
 		if pandas.isnull(result['DECADE'][i]):
 			nIncorrect += 1.0
-		if int(result['YEAR'][i]//10*10) != result['DECADE'][i]:
+		elif int(result['YEAR'][i]//10*10) != result['DECADE'][i]:
 			nIncorrect += 1.0
 	print nIncorrect, nSamples
 	return nIncorrect/nSamples
-'''
 
 
 ### Processing training set ###
@@ -126,12 +125,24 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
                              #max_features = BAGSIZE)
 
 # Fit model and learn vocabulary on existing lyrics
-# Transform training data into feature vectorse
+# Transform training data into feature vectors
 trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
-#printFeatures(vectorizer, trainDataFeatures)
-#trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
 
+'''
+# Create lda topic modeler (20 topics, 1500 iterations)
+model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
+
+# Fit lda model on features
+model.fit(trainDataFeatures)
+topic_word = model.topic_word_
+n_top_words = 8
+
+# Iterate through topics (i: topic number, topic_dist: distribution of items in topic)
+for i, topic_dist in enumerate(topic_word):
+    topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
+    print('Topic {}: {}'.format(i, ' '.join(topic_words)))
+'''
 
 ### Random Forest Classifier ###
 # Initialize random forest with 100 trees
@@ -148,7 +159,6 @@ testDataFeatures = testDataFeatures.toarray()
 
 # Use random forest to make decade label predictions
 result = forest.predict(testDataFeatures)
-
 # Copy results to pandas DF with predicted 'DECADE' column
 # Write csv output file
 output = pandas.DataFrame(data = {	\
@@ -158,10 +168,5 @@ output = pandas.DataFrame(data = {	\
 	'YEAR':testDFNotNull['YEAR'],			\
 	'DECADE':result})
 
-#print testAccuracy(output)
-output.to_csv('data/Bag_of_Words_model.csv', index=False, sep='@', quoting=3, \
-	columns=['NUM','ARTIST', 'SONG', 'YEAR', 'DECADE'])
-
-
-
+print 'accuracy: ', str(1 - testAccuracy(output))
 
