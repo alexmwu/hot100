@@ -28,14 +28,23 @@ LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
 # (have lyrics, years, artists, etc. already in dataframes)
 # Apply cleaning to a lyrics string
 
+
+# Searching set is faster than searching list--convert to set
+stops = set(stopwords.words("english"))
+# Usage: cleanLyrics(raw_lyrics)
+# Input: string
+# Output: lower case string with removed special characters except for apostrophes within a word (removes trailing apostrophes)
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
-	letters_only = re.sub('[^a-zA-Z]', ' ', raw_lyrics)
+	letters_only = re.sub("[^-'a-zA-Z]", ' ', raw_lyrics)
+	letters_only = re.sub('-', '', letters_only)
 	words = letters_only.lower().split()
-	# Searching set is faster than searching list--convert to set
-	stops = set(stopwords.words("english"))
-	meaningful_words = [w for w in words if not w in stops]
+	meaningful_words = [w.strip('\'') for w in words if not w in stops]
 	return (" ".join(meaningful_words))
+
+# Custom tokenizer for scikit CountVectorizer because it would strip apostrophe's
+def split_tokenize(s):
+	return s.split()
 
 # Usage: printFeatures(vectorizer, trainDataFeatures)
 def printFeatures(vectorizer, features):
@@ -115,7 +124,7 @@ trainDF = getDF(LYRICS_PATH_TRAIN, train=True)
 
 # Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
 vectorizer = CountVectorizer(analyzer = 'word',   \
-                             tokenizer = None,    \
+                             tokenizer = split_tokenize,    \
                              preprocessor = None, \
                              stop_words = None,   \
                              )
@@ -125,6 +134,7 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
 # Transform training data into feature vectors
 trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
+#printFeatures(vectorizer, trainDataFeatures)
 
 ### Random Forest Classifier ###
 # Initialize random forest with 100 trees
