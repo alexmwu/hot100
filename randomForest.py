@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
+# Random Forest Classifer on Hot100 song lyrics to predict decade song was released depending on vocabulary in lyrics
+
 # Reads in lyrics from data/lyrics/####hot100.atsv files
 # Creates bag of words from lyrics
+# Creates random forest model on training dataset
+# Uses model to predict test set
+# Prints accuracy of model on test set
 
 # Referenced for bag of words: https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words
 
@@ -14,7 +19,6 @@ from os.path import isfile, join, basename
 from os import listdir
 import sys
 import numpy as np
-#import lda
 
 BAGSIZE = 50
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
@@ -22,8 +26,8 @@ LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
 
 # TODO: use pickle to place dataframes into files to reduce processing cost each time
 # (have lyrics, years, artists, etc. already in dataframes)
-# TODO: separate different learners into different scripts
 # Apply cleaning to a lyrics string
+
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
 	letters_only = re.sub('[^a-zA-Z]', ' ', raw_lyrics)
@@ -45,14 +49,6 @@ def printFeatures(vectorizer, features):
 	for count, word in word_count_sorted:
 		print count, word
 
-# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
-def createAvgFeatureVec(vectorizer, features):
-	# Useful for Naive Bayes, not used for Random Forest
-	nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
-	avgFeatureVec = []
-	for feature in features:
-		avgFeatureVec.append(feature/nwords)
-	return avgFeatureVec
 
 # Usage: getDF(PATH, train)
 # Input: PATH = directory path that contains lyrics
@@ -130,21 +126,6 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
 trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
 
-'''
-# Create lda topic modeler (20 topics, 1500 iterations)
-model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
-
-# Fit lda model on features
-model.fit(trainDataFeatures)
-topic_word = model.topic_word_
-n_top_words = 8
-
-# Iterate through topics (i: topic number, topic_dist: distribution of items in topic)
-for i, topic_dist in enumerate(topic_word):
-    topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
-    print('Topic {}: {}'.format(i, ' '.join(topic_words)))
-'''
-
 ### Random Forest Classifier ###
 # Initialize random forest with 100 trees
 forest = RandomForestClassifier(n_estimators=100)
@@ -170,4 +151,5 @@ output = pandas.DataFrame(data = {	\
 	'DECADE':result})
 
 print 'Accuracy: ' + '%.2f' % testAccuracy(output) + '%'
+
 
