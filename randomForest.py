@@ -37,7 +37,7 @@ stops = set(stopwords.words("english"))
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
 	letters_only = re.sub("[^-'a-zA-Z]", ' ', raw_lyrics)
-	letters_only = re.sub('-', '', letters_only)
+	letters_only = re.sub("(-|'s)", '', letters_only)
 	words = letters_only.lower().split()
 	meaningful_words = [w.strip('\'') for w in words if not w in stops]
 	return (" ".join(meaningful_words))

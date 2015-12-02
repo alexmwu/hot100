@@ -14,7 +14,7 @@ from os.path import isfile, join, basename
 from os import listdir
 import sys
 import numpy as np
-#import lda
+import lda
 
 BAGSIZE = 100
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
@@ -34,7 +34,7 @@ stops = set(stopwords.words("english"))
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
 	letters_only = re.sub("[^-'a-zA-Z]", ' ', raw_lyrics)
-	letters_only = re.sub('-', '', letters_only)
+	letters_only = re.sub("(-|'s)", '', letters_only)
 	words = letters_only.lower().split()
 	meaningful_words = [w.strip('\'') for w in words if not w in stops]
 	return (" ".join(meaningful_words))
@@ -123,7 +123,6 @@ def testAccuracy(result):
 	return (1-nIncorrect/nSamples)*100
 
 
-
 ### Processing training set ###
 trainDF = getDF(LYRICS_PATH_TRAIN, train=True)
 
@@ -142,7 +141,6 @@ trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
 #printFeatures(vectorizer, trainDataFeatures)
 
 
-'''
 # Create lda topic modeler (20 topics, 1500 iterations)
 model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
 
@@ -155,8 +153,8 @@ n_top_words = 8
 for i, topic_dist in enumerate(topic_word):
     topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
     print('Topic {}: {}'.format(i, ' '.join(topic_words)))
-'''
 
+"""
 ### Random Forest Classifier ###
 # Initialize random forest with 100 trees
 forest = RandomForestClassifier(n_estimators=100)
@@ -182,3 +180,4 @@ output = pandas.DataFrame(data = {	\
 	'DECADE':result})
 
 print 'Accuracy: ' + '%.2f' % testAccuracy(output) + '%'
+"""
