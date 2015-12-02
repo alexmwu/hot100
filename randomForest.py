@@ -23,6 +23,7 @@ import numpy as np
 BAGSIZE = 50
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
 LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
+OUTPUT_PATH = 'data/Bag_of_Words_model.csv'
 
 # TODO: use pickle to place dataframes into files to reduce processing cost each time
 # (have lyrics, years, artists, etc. already in dataframes)
@@ -152,13 +153,16 @@ testDataFeatures = testDataFeatures.toarray()
 # Use random forest to make decade label predictions
 result = forest.predict(testDataFeatures)
 # Copy results to pandas DF with predicted 'DECADE' column
-# Write csv output file
 output = pandas.DataFrame(data = {	\
 	'NUM':testDFNotNull['NUM'],				\
 	'ARTIST':testDFNotNull['ARTIST'],	\
 	'SONG':testDFNotNull['SONG'],			\
 	'YEAR':testDFNotNull['YEAR'],			\
 	'DECADE':result})
+
+# Write csv output file
+#output.to_csv(OUTPUT_PATH, index=False, sep='@', quoting=3, \
+#	columns=['NUM','ARIST', 'SONG', 'YEAR', 'DECADE'])
 
 print 'Accuracy: ' + '%.2f' % testAccuracy(output) + '%'
 

@@ -54,4 +54,23 @@ Charts format: NUM@ARTIST@SONG
 
 Lyrics format: NUM@ARTIST@SONG@LYRICS
 
-Splits contractions into two words
+Removes possessives ('s), trailing apostrophes, and concatenates words divided by hyphens
+
+
+Files:
+------
+accuracy.py: reads output file containing predicted classes from test dataset and computes the accuracy of the model prediction
+
+bagOfWords.py: creates a bag of words using scikit learn, several  functions are implemented that can be useful for preprocessing.
+
+billboardHot100.py: scrapes Billboard Hot 100 for top rated songs in the past 80 years and writes to data/charts
+
+checkEmpty.sh:
+
+getLyrics.py: processes all songs listed in every file in data/charts and writes lyrics scraped from http://www.lyrics.wikia.com/api.php to data/lyrics
+
+getLyricsParallel.py: processes one charts file and writes lyrics scraped from http://www.lyrics.wikia.com/api.php to data/lyrcs. Can be called in parallel to process multiple charts files.
+
+runParallel.sh: bash script to call getLyricsParallel.py in parallel with different files within data/charts as parameters.
+
+randomForest.py: creates model for Random Forest Classifier from training dataset to predict on test dataset. Uncomment lines 164-165 to write predicted output to csv file.
