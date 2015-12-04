@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# Reads in lyrics from data/lyrics/####hot100.atsv files
-# Creates bag of words from lyrics
+# Functions to read in lyrics from data/lyrics/####hot100.atsv files
+# and create bag of words from lyrics
 
 # Referenced for bag of words: https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words
 
@@ -9,24 +9,17 @@ import pandas
 import re
 from nltk.corpus import stopwords # import stop word list
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.ensemble import RandomForestClassifier
 from os.path import isfile, join, basename
-from os import listdir
-import sys
-import numpy as np
-import lda
-
-BAGSIZE = 100
-LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
-LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
-
-# TODO: use pickle to place dataframes into files to reduce processing cost each time
-# (have lyrics, years, artists, etc. already in dataframes)
-# TODO: separate different learners into different scripts
-# Apply cleaning to a lyrics string
+from os import listdir, stat
 
 # Searching set is faster than searching list--convert to set
 stops = set(stopwords.words("english"))
+
+BAGSIZE = 50
+
+# Custom tokenizer for scikit CountVectorizer because it would strip apostrophe's
+def split_tokenize(s):
+	return s.split()
 
 # Usage: cleanLyrics(raw_lyrics)
 # Input: string
@@ -38,10 +31,6 @@ def cleanLyrics(raw_lyrics):
 	words = letters_only.lower().split()
 	meaningful_words = [w.strip('\'') for w in words if not w in stops]
 	return (" ".join(meaningful_words))
-
-# Custom tokenizer for scikit CountVectorizer because it would strip apostrophe's
-def split_tokenize(s):
-	return s.split()
 
 # Usage: printFeatures(vectorizer, trainDataFeatures)
 def printFeatures(vectorizer, features):
@@ -76,6 +65,8 @@ def getDF(LYRICS_PATH, train):
 	# Ignores hidden files
 	files = [f for f in listdir(LYRICS_PATH) if isfile(join(LYRICS_PATH,f)) and not f.startswith('.')]
 	for FILE in files:
+                if stat(LYRICS_PATH+FILE).st_size <= 0:
+                    continue
 		df_singleFile = pandas.read_csv(LYRICS_PATH+FILE, \
 			header=None, delimiter='@', na_filter=True, quoting=3, \
 			names=['NUM', 'ARTIST', 'SONG', 'LYRICS'])
@@ -119,65 +110,14 @@ def testAccuracy(result):
 			nIncorrect += 1.0
 		elif int(result['YEAR'][i]//10*10) != result['DECADE'][i]:
 			nIncorrect += 1.0
-	#print nIncorrect, nSamples
 	return (1-nIncorrect/nSamples)*100
 
+# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
+def createAvgFeatureVec(vectorizer, features):
+    # Useful for Naive Bayes, not used for Random Forest
+    nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
+    avgFeatureVec = []
+    for feature in features:
+        avgFeatureVec.append(feature/nwords)
+    return avgFeatureVec
 
-### Processing training set ###
-trainDF = getDF(LYRICS_PATH_TRAIN, train=True)
-
-# Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
-vectorizer = CountVectorizer(analyzer = 'word',   \
-                             tokenizer = split_tokenize,    \
-                             preprocessor = None, \
-                             stop_words = None,   \
-                             #max_features = BAGSIZE
-                             )
-
-# Fit model and learn vocabulary on existing lyrics
-# Transform training data into feature vectors
-trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
-trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
-#printFeatures(vectorizer, trainDataFeatures)
-
-
-# Create lda topic modeler (20 topics, 1500 iterations)
-model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
-
-# Fit lda model on features
-model.fit(trainDataFeatures)
-topic_word = model.topic_word_
-n_top_words = 8
-
-# Iterate through topics (i: topic number, topic_dist: distribution of items in topic)
-for i, topic_dist in enumerate(topic_word):
-    topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
-    print('Topic {}: {}'.format(i, ' '.join(topic_words)))
-
-"""
-### Random Forest Classifier ###
-# Initialize random forest with 100 trees
-forest = RandomForestClassifier(n_estimators=100)
-
-# Fit forest model to training set using bag of words as features and decade as label
-forest = forest.fit(trainDataFeatures, trainDFNotNull['DECADE'])
-
-# Get bag of words for test set, transform to feature vectors, and convert to numpy array
-testDF = getDF(LYRICS_PATH_TEST, train=False)
-testDFNotNull = testDF[pandas.notnull(testDF['LYRICS'])]
-testDataFeatures = vectorizer.transform(testDFNotNull['LYRICS'])
-testDataFeatures = testDataFeatures.toarray()
-
-# Use random forest to make decade label predictions
-result = forest.predict(testDataFeatures)
-# Copy results to pandas DF with predicted 'DECADE' column
-# Write csv output file
-output = pandas.DataFrame(data = {	\
-	'NUM':testDFNotNull['NUM'],				\
-	'ARTIST':testDFNotNull['ARTIST'],	\
-	'SONG':testDFNotNull['SONG'],			\
-	'YEAR':testDFNotNull['YEAR'],			\
-	'DECADE':result})
-
-print 'Accuracy: ' + '%.2f' % testAccuracy(output) + '%'
-"""
