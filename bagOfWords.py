@@ -10,7 +10,7 @@ import re
 from nltk.corpus import stopwords # import stop word list
 from sklearn.feature_extraction.text import CountVectorizer
 from os.path import isfile, join, basename
-from os import listdir
+from os import listdir, stat
 
 # Searching set is faster than searching list--convert to set
 stops = set(stopwords.words("english"))
@@ -65,6 +65,8 @@ def getDF(LYRICS_PATH, train):
 	# Ignores hidden files
 	files = [f for f in listdir(LYRICS_PATH) if isfile(join(LYRICS_PATH,f)) and not f.startswith('.')]
 	for FILE in files:
+                if stat(LYRICS_PATH+'/'+FILE).st_size <= 0:
+                    continue
 		df_singleFile = pandas.read_csv(LYRICS_PATH+FILE, \
 			header=None, delimiter='@', na_filter=True, quoting=3, \
 			names=['NUM', 'ARTIST', 'SONG', 'LYRICS'])
@@ -109,4 +111,13 @@ def testAccuracy(result):
 		elif int(result['YEAR'][i]//10*10) != result['DECADE'][i]:
 			nIncorrect += 1.0
 	return (1-nIncorrect/nSamples)*100
+
+# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
+def createAvgFeatureVec(vectorizer, features):
+    # Useful for Naive Bayes, not used for Random Forest
+    nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
+    avgFeatureVec = []
+    for feature in features:
+        avgFeatureVec.append(feature/nwords)
+    return avgFeatureVec
 
