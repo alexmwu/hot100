@@ -73,4 +73,6 @@ getLyricsParallel.py: processes one charts file and writes lyrics scraped from h
 
 randomForest.py: creates model for Random Forest Classifier from training dataset to predict on test dataset. Also outputs predictioncs to csv file in `data/Bag_of_words_model.csv`.
 
+rng.py: randomly selects files to be training files and testing files
+
 runParallel.sh: bash script to call getLyricsParallel.py in parallel with different files within data/charts as parameters.

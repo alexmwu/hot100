@@ -15,6 +15,8 @@ from os import listdir
 # Searching set is faster than searching list--convert to set
 stops = set(stopwords.words("english"))
 
+BAGSIZE = 50
+
 # Custom tokenizer for scikit CountVectorizer because it would strip apostrophe's
 def split_tokenize(s):
 	return s.split()
