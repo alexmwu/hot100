@@ -14,19 +14,25 @@ from os import listdir
 import sys
 import numpy as np
 
-BAGSIZE = 50
+BAGSIZE = 100
 LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
 LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
 
 # TODO: use pickle to place dataframes into files to reduce processing cost each time
 # (have lyrics, years, artists, etc. already in dataframes)
+
+# Searching set is faster than searching list--convert to set
+stops = set(stopwords.words("english"))
+
+# Usage: cleanLyrics(raw_lyrics)
+# Input: string
+# Output: lower case string with removed special characters except for apostrophes within a word (removes trailing apostrophes)
 def cleanLyrics(raw_lyrics):
 	# Remove non-letters, convert to lowercase, remove stop words
-	letters_only = re.sub('[^a-zA-Z]', ' ', raw_lyrics)
+	letters_only = re.sub("[^-'a-zA-Z]", ' ', raw_lyrics)
+	letters_only = re.sub("(-|'s)", '', letters_only)
 	words = letters_only.lower().split()
-	# Searching set is faster than searching list--convert to set
-	stops = set(stopwords.words("english"))
-	meaningful_words = [w for w in words if not w in stops]
+	meaningful_words = [w.strip('\'') for w in words if not w in stops]
 	return (" ".join(meaningful_words))
 
 # Usage: printFeatures(vectorizer, trainDataFeatures)
@@ -41,14 +47,23 @@ def printFeatures(vectorizer, features):
 	for count, word in word_count_sorted:
 		print count, word
 
-def getDF(PATH, train):
+# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
+def createAvgFeatureVec(vectorizer, features):
+	# Useful for Naive Bayes, not used for Random Forest
+	nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
+	avgFeatureVec = []
+	for feature in features:
+		avgFeatureVec.append(feature/nwords)
+	return avgFeatureVec
+
+# Usage: getDF(PATH, train)
+# Input: PATH = directory path that contains lyrics
+# Input: train: True or False; True denotes training dataset, False denotes testing dataset
+# Creates data frame that stores Hot100 number ranking for given year, Artist, Song, Lyrics, Year, Decade
+# Decade column is left Null for testing dataset
+def getDF(LYRICS_PATH, train):
 	columns = ['NUM', 'ARTIST', 'SONG', 'LYRICS', 'YEAR', 'DECADE']
 	df = pandas.DataFrame(columns=columns)
-
-	if train:
-		LYRICS_PATH = LYRICS_PATH_TRAIN
-	else:
-		LYRICS_PATH = LYRICS_PATH_TEST
 
 	# Ignores hidden files
 	files = [f for f in listdir(LYRICS_PATH) if isfile(join(LYRICS_PATH,f)) and not f.startswith('.')]
@@ -61,7 +76,6 @@ def getDF(PATH, train):
 		# Adding YEAR column to data frame
 		fileYear = int(FILE[:-len('hot100.atsv')])
 		yearCol = pandas.DataFrame({'YEAR':[fileYear]*df_singleFile.shape[0]})
-		#yearCol = pandas.Series([fileYear]*df_singleFile.shape[0], name='YEAR')
 		df1 = pandas.concat([df_singleFile, yearCol], axis=1)
 
 		# Add DECADE column to data frame for training set
@@ -82,7 +96,6 @@ def getDF(PATH, train):
 
 		# Append new DF to master DF
 		df = df.append(df1, ignore_index=True)
-		#df.shape
 	return df
 
 ### Processing training set ###
@@ -90,14 +103,15 @@ trainDF = getDF(LYRICS_PATH_TRAIN, train=True)
 
 # Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
 vectorizer = CountVectorizer(analyzer = 'word',   \
-                             tokenizer = None,    \
+                             tokenizer = split_tokenize,    \
                              preprocessor = None, \
                              stop_words = None,   \
+                             #max_features = BAGSIZE
                              )
-                             #max_features = BAGSIZE)
 
 # Fit model and learn vocabulary on existing lyrics
 # Transform training data into feature vectors
 trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
+#printFeatures(vectorizer, trainDataFeatures)
 
