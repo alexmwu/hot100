@@ -13,7 +13,7 @@ for year in ${DECADES[@]}; do
     RN2=$((RANDOM % 10))
   done
 
-  for i in $(seq 1 10); do
+  for i in $(seq 0 9); do
     outfile=data/lyrics/$year$i
     outfile+=hot100.atsv
     if [ $i -eq $RN1 ] || [ $i -eq $RN2 ]; then
