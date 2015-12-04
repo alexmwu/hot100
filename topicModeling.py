@@ -11,6 +11,7 @@
 import pandas
 import lda
 from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
 
 # user functions
 from bagOfWords import getDF, split_tokenize
@@ -39,7 +40,7 @@ model = lda.LDA(n_topics=20, n_iter=300, random_state=1)
 # Fit lda model on features
 model.fit(lyricsFeatures)
 topic_word = model.topic_word_
-n_top_words = 8
+n_top_words = 20
 
 f = open(OUTPUT_PATH, 'w')
 
@@ -48,7 +49,7 @@ for i, topic_dist in enumerate(topic_word):
     topic_words = np.array(vectorizer.get_feature_names())[np.argsort(topic_dist)][:-(n_top_words+1):-1]
     print('Topic {}: {}'.format(i, ' '.join(topic_words)))
     # write top #n_top_words to file
-    out = 'Topic {}: {}'.format(i, ' '.join(topic_words))
+    out = 'Topic {}: {}\n'.format(i, ' '.join(topic_words))
     f.write(out)
 
 f.close()

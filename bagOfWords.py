@@ -65,7 +65,7 @@ def getDF(LYRICS_PATH, train):
 	# Ignores hidden files
 	files = [f for f in listdir(LYRICS_PATH) if isfile(join(LYRICS_PATH,f)) and not f.startswith('.')]
 	for FILE in files:
-                if stat(LYRICS_PATH+'/'+FILE).st_size <= 0:
+                if stat(LYRICS_PATH+FILE).st_size <= 0:
                     continue
 		df_singleFile = pandas.read_csv(LYRICS_PATH+FILE, \
 			header=None, delimiter='@', na_filter=True, quoting=3, \
