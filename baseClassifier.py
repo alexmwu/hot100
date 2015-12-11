@@ -17,7 +17,7 @@ import numpy as np
 from bagOfWords import getDF, split_tokenize
 
 BAGSIZE = 100
-LYRICS_PATH = 'data/lyrics/'
+LYRICS_PATH = 'data/lyrics_1990s_2000s/'
 
 # Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
 vectorizer = CountVectorizer(analyzer = 'word',   \
@@ -32,7 +32,7 @@ dataDF = getDF(LYRICS_PATH, train=True)
 dataDFNotNull = dataDF[pandas.notnull(dataDF['LYRICS'])]
 
 # Split dataset to train and test with a 4:1 ratio
-trainDFNotNull, testDFNotNull = cross_validation.train_test_split(dataDFNotNull, test_size=0.25)
+trainDFNotNull, testDFNotNull = cross_validation.train_test_split(dataDFNotNull, test_size=0.2)
 trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
 testDataFeatures = vectorizer.transform(testDFNotNull['LYRICS'])
 testDataFeatures = testDataFeatures.toarray()
