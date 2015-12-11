@@ -10,17 +10,14 @@
 
 import pandas
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn import cross_validation
 import numpy as np
 
 # user functions
 from bagOfWords import getDF, split_tokenize
 
-LYRICS_PATH_TRAIN = 'data/sample_lyrics_train/'
-LYRICS_PATH_TEST = 'data/sample_lyrics_test/'
-OUTPUT_PATH = 'data/Bag_of_Words_model.csv'
-
-### Processing training set ###
-trainDF = getDF(LYRICS_PATH_TRAIN, train=True)
+BAGSIZE = 100
+LYRICS_PATH = 'data/lyrics_1990s_2000s/'
 
 # Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
 vectorizer = CountVectorizer(analyzer = 'word',   \
@@ -30,14 +27,12 @@ vectorizer = CountVectorizer(analyzer = 'word',   \
                              )
                              #max_features = BAGSIZE)
 
-# Transform training data into feature vectors
-trainDFNotNull = trainDF[pandas.notnull(trainDF['LYRICS'])]
-trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
-#printFeatures(vectorizer, trainDataFeatures)
+# Transform data into feature vectors
+dataDF = getDF(LYRICS_PATH, train=True)
+dataDFNotNull = dataDF[pandas.notnull(dataDF['LYRICS'])]
 
-# Get bag of words for test set, transform to feature vectors, and convert to numpy array
-testDF = getDF(LYRICS_PATH_TEST, train=False)
-testDFNotNull = testDF[pandas.notnull(testDF['LYRICS'])]
+# Split dataset to train and test with a 4:1 ratio
+trainDFNotNull, testDFNotNull = cross_validation.train_test_split(dataDFNotNull, test_size=0.2)
+trainDataFeatures = vectorizer.fit_transform(trainDFNotNull['LYRICS'])
 testDataFeatures = vectorizer.transform(testDFNotNull['LYRICS'])
 testDataFeatures = testDataFeatures.toarray()
-

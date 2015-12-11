@@ -1,0 +1,21 @@
+What is your supervised learning problem statement -- what will be your classes? I am assuming it is the problem statement 2. 
+
+How will you get to the problem statements 1 and 3 with k-means clustering. 
+
+You will not necessarily need to split the data into training and testing for clustering work. Think of 1 and 3 as telling a descriptive story about data. The 2 will require training and testing. 
+
+Will you be writing your own code for bag-of-words? 
+
+Bag of words
+See if decades cluster--use year as label to color in clustering
+- hierarchical
+
+data/lyrics/1947hot100.atsv
+
+
+comments:
+Reads in all data files in train and test directories
+Adds year and decade columns to data
+Creates bag of words
+Performs random forest classifer using decade as class
+Tests model on test data
