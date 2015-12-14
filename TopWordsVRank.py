@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 # user functions
 from bagOfWords import getData, split_tokenize, printFeatures, create_count_top
 
-LYRICS_PATH = '../data/lyrics/'
-OUTPUT_PATH = '../data/topic_model_output.txt'
+LYRICS_PATH = 'data/lyrics/'
+OUTPUT_PATH = 'data/topic_model_output.txt'
 
 ### Processing training set ###
 lyricsDF = getData(LYRICS_PATH)
@@ -70,6 +70,7 @@ for a in range(1,100):
 		elif b == 2010:
 			c.append('w')
 
+
 #Print the scatter plot
 plt.scatter(x,y, c=c)
 plt.title("Occurance of top words and ranking")
@@ -77,7 +78,9 @@ plt.xlabel("Rank of Song")
 plt.ylabel("# of Top 100 Words in Song")
 plt.xlim(0, 101)
 plt.ylim(0,80)
-
+plt.plot(x, np.poly1d(np.polyfit(x, y, 1))(x))
 plt.show()
+
+
 
 
