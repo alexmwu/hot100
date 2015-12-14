@@ -17,7 +17,7 @@ import numpy as np
 from bagOfWords import getDF, split_tokenize
 
 BAGSIZE = 100
-LYRICS_PATH = 'data/lyrics/'
+LYRICS_PATH = 'data/lyrics_1990s_2000s/'
 
 # Initialize the "CountVectorizer" object, which is scikit-learn's bag of words tool.
 vectorizer = CountVectorizer(analyzer = 'word',   \
