@@ -74,7 +74,9 @@ baseClassifiers.py: base script on which other classifiers are built
 
 billboardHot100.py: scrapes Billboard Hot 100 for top rated songs in the past 80 years and writes to data/charts
 
-checkEmpty.sh: checks which charts are empty (see which years billboardHot100 failed on)
+checkEmptyCharts.sh: checks which charts are empty (see which years billboardHot100 failed on)
+
+checkEmptyLyrics.sh: checks which song lyrics are empty
 
 clustering.py: implements k-means clustering (k = 7) on the text
 
@@ -91,4 +93,6 @@ rng.sh: randomly selects files to be training files and testing files
 runParallel.sh: bash script to call getLyricsParallel.py in parallel with different files within data/charts as parameters.
 
 topicModeling.py: runs topic modeling (lda) on all lyrics
+
+TopWordsVRank.py: runs through files and grabs top 100 words and looks at which years include these (and how many)
 
