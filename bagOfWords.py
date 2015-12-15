@@ -7,10 +7,13 @@
 
 import pandas
 import re
+import math
+import itertools
 from nltk.corpus import stopwords # import stop word list
 from sklearn.feature_extraction.text import CountVectorizer
 from os.path import isfile, join, basename
 from os import listdir, stat
+from collections import Counter
 
 # Searching set is faster than searching list--convert to set
 stops = set(stopwords.words("english"))
@@ -112,12 +115,84 @@ def testAccuracy(result):
 			nIncorrect += 1.0
 	return (1-nIncorrect/nSamples)*100
 
-# Usage: trainAvgFeatureVec = createAvgFeatureVec(vectorizer, trainDataFeatures)
-def createAvgFeatureVec(vectorizer, features):
-    # Useful for Naive Bayes, not used for Random Forest
-    nwords = features.toarray().sum(axis=0).sum() # flattens matrix to single sum
-    avgFeatureVec = []
-    for feature in features:
-        avgFeatureVec.append(feature/nwords)
-    return avgFeatureVec
+# Usage: list_song, decade_song = create_count_top(vectorizer, lyricsDF)
+def create_count_top(vectorizer, features):
+
+	# Get the list of all words in a song
+	avgFeatureVec = []
+	for feature in features.values:
+		words = feature[3]
+		decade = feature[5]
+		if not isinstance(words,float):
+			word_list = words.split(' ')
+			avgFeatureVec.append(word_list)
+
+	# Get a count of the most common words in all the song lyrics
+	merged = list(itertools.chain(*avgFeatureVec))
+	count = Counter()
+	for word in merged:
+		count[word] += 1
+	top_100 =  count.most_common(100)
+
+	list_song = [[0 for x in range(101)] for x in range(101)] 
+	decade_song = [[0 for x in range(101)] for x in range(101)] 
+	i = 0
+
+	# Group together in list the number of top words in a song based on a song's rank
+	for feature in features.values:
+		words = feature[3]
+		rank = int(feature[0])
+		decade = int(feature[5])
+		num = 0
+		if not isinstance(words,float):
+			for word in top_100:
+				if word[0] in words:
+					num = num + 1
+			list_song[rank][i] = num # Number of top words
+			decade_song[rank][i] = decade # Decade to map to song
+
+			if i == 100: i = 0
+			else: i = i + 1
+			
+			print "Rank: " + str(feature[0]) + " song: " + feature[2] + " has " + str(num) + " top words"
+	return list_song, decade_song
+
+# To get all the songs
+def getData(LYRICS_PATH):
+	columns = ['NUM', 'ARTIST', 'SONG', 'LYRICS', 'YEAR', 'DECADE']
+	df = pandas.DataFrame(columns=columns)
+
+	# Ignores hidden files
+	files = [f for f in listdir(LYRICS_PATH) if isfile(join(LYRICS_PATH,f)) and not f.startswith('.')]
+	for FILE in files:
+                if stat(LYRICS_PATH+FILE).st_size <= 0:
+                    continue
+		df_singleFile = pandas.read_csv(LYRICS_PATH+FILE, \
+			header=None, delimiter='@', na_filter=True, quoting=3, \
+			names=['NUM', 'ARTIST', 'SONG', 'LYRICS'])
+			# quoting=3 ignores double quotes
+
+		# Adding YEAR column to data frame
+		fileYear = int(FILE[:-len('hot100.atsv')])
+		yearCol = pandas.DataFrame({'YEAR':[fileYear]*df_singleFile.shape[0]})
+		df1 = pandas.concat([df_singleFile, yearCol], axis=1)
+
+		# Add DECADE column to data frame for training set
+		fileDecade = fileYear//10*10
+		decadeCol = pandas.DataFrame({'DECADE':[fileDecade]*df_singleFile.shape[0]})
+		df1 = pandas.concat([df1, decadeCol], axis=1)
+
+		# Clean lyrics in place
+		num_lyrics = df1['LYRICS'].size
+		# print "Cleaned %d of %d lyrics" % (0, num_lyrics)
+		for i in range(num_lyrics):
+			#if (i+1)%25 == 0:
+			#	print "Cleaned %d of %d lyrics" % (i+1, num_lyrics)
+			if not pandas.isnull(df1['LYRICS'][i]):
+				df1.loc[i,'LYRICS'] = cleanLyrics(df1['LYRICS'][i])
+		#print "Finished cleaning %d lyrics" % (num_lyrics)
+
+		# Append new DF to master DF
+		df = df.append(df1, ignore_index=True)
+	return df
 
